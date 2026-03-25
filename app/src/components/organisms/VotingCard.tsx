@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/atoms/Button';
+import { LoadingSpinner } from '@/components/atoms/LoadingSpinner';
 import { Text } from '@/components/atoms/Text';
 import type { PollOptionResponse } from '@/generated/api/server.client';
-import { LoadingSpinner } from '@/components/atoms/LoadingSpinner';
 
 interface VotingCardProps {
 	question: string;
