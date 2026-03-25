@@ -19,6 +19,8 @@ bun dev
 
 The app runs at `http://localhost:3000`.
 
+**Production:** [https://hubblr-coding-challenge-teal.vercel.app/](https://hubblr-coding-challenge-teal.vercel.app/)
+
 ## Tech Stack
 
 | Layer     | Choice                                                    |
