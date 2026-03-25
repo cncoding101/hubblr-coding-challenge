@@ -7,17 +7,17 @@
  */
 import { fetchClient } from '../../utils/helpers/fetch-client';
 export interface CreatePollBody {
-  /**
-   * The poll question
-   * @minLength 1
-   */
-  question: string;
-  /**
-   * List of answer options
-   * @minItems 2
-   * @maxItems 5
-   */
-  options: string[];
+	/**
+	 * The poll question
+	 * @minLength 1
+	 */
+	question: string;
+	/**
+	 * List of answer options
+	 * @minItems 2
+	 * @maxItems 5
+	 */
+	options: string[];
 }
 
 /**
@@ -26,79 +26,79 @@ export interface CreatePollBody {
 export type CreatePollResponseCreatedAt = { [key: string]: unknown };
 
 export type CreatePollResponseOptionsItem = {
-  /** Option ID */
-  id: number;
-  /** Option label */
-  label: string;
+	/** Option ID */
+	id: number;
+	/** Option label */
+	label: string;
 };
 
 export interface CreatePollResponse {
-  /** Poll ID */
-  id: string;
-  /** The poll question */
-  question: string;
-  /** Creation timestamp */
-  createdAt: CreatePollResponseCreatedAt;
-  /** Poll options */
-  options: CreatePollResponseOptionsItem[];
+	/** Poll ID */
+	id: string;
+	/** The poll question */
+	question: string;
+	/** Creation timestamp */
+	createdAt: CreatePollResponseCreatedAt;
+	/** Poll options */
+	options: CreatePollResponseOptionsItem[];
 }
 
 export interface PollPathParams {
-  /** Poll ID */
-  id: string;
+	/** Poll ID */
+	id: string;
 }
 
 export interface PollOptionResponse {
-  /** Option ID */
-  id: number;
-  /** Option label */
-  label: string;
-  /** Number of votes for this option */
-  votes: number;
+	/** Option ID */
+	id: number;
+	/** Option label */
+	label: string;
+	/** Number of votes for this option */
+	votes: number;
 }
 
 export interface GetPollResponse {
-  /** Poll ID */
-  id: string;
-  /** The poll question */
-  question: string;
-  /** Creation timestamp */
-  createdAt: string;
-  /** Total number of votes */
-  totalVotes: number;
-  /** Poll options with vote counts */
-  options: PollOptionResponse[];
+	/** Poll ID */
+	id: string;
+	/** The poll question */
+	question: string;
+	/** Creation timestamp */
+	createdAt: string;
+	/** Total number of votes */
+	totalVotes: number;
+	/** Poll options with vote counts */
+	options: PollOptionResponse[];
 }
 
 export interface VotePathParams {
-  /** Poll ID */
-  id: string;
+	/** Poll ID */
+	id: string;
 }
 
 export interface CastVoteBody {
-  /**
-   * ID of the option to vote for
-   * @exclusiveMinimum 0
-   */
-  optionId: number;
-  /**
-   * Unique browser token
-   * @minLength 1
-   */
-  voterToken: string;
+	/**
+	 * ID of the option to vote for
+	 * @exclusiveMinimum 0
+	 */
+	optionId: number;
+	/**
+	 * Unique browser token
+	 * @minLength 1
+	 */
+	voterToken: string;
 }
 
 export interface CastVoteResponse {
-  /** Vote ID */
-  id: number;
-  /** Poll ID */
-  pollId: string;
-  /** Voted option ID */
-  optionId: number;
-  /** Voter token */
-  voterToken: string;
-  /** Vote timestamp */
-  createdAt: string;
+	/** Vote ID */
+	id: number;
+	/** Poll ID */
+	pollId: string;
+	/** Voted option ID */
+	optionId: number;
+	/** Voter token */
+	voterToken: string;
+	/** Vote timestamp */
+	createdAt: string;
 }
 
 /**
@@ -106,109 +106,86 @@ export interface CastVoteResponse {
  * @summary Create a new poll
  */
 export type postPollsResponse201 = {
-  data: CreatePollResponse
-  status: 201
-}
-
-export type postPollsResponseSuccess = (postPollsResponse201) & {
-  headers: Headers;
+	data: CreatePollResponse;
+	status: 201;
 };
-;
 
-export type postPollsResponse = (postPollsResponseSuccess)
+export type postPollsResponseSuccess = postPollsResponse201 & {
+	headers: Headers;
+};
+export type postPollsResponse = postPollsResponseSuccess;
 
 export const getPostPollsUrl = () => {
+	return `/polls`;
+};
 
-
-  
-
-  return `/polls`
-}
-
-export const postPolls = async (createPollBody: CreatePollBody, options?: RequestInit): Promise<postPollsResponse> => {
-  
-  return fetchClient<postPollsResponse>(getPostPollsUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      createPollBody,)
-  }
-);}
-  
-
+export const postPolls = async (
+	createPollBody: CreatePollBody,
+	options?: RequestInit
+): Promise<postPollsResponse> => {
+	return fetchClient<postPollsResponse>(getPostPollsUrl(), {
+		...options,
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', ...options?.headers },
+		body: JSON.stringify(createPollBody)
+	});
+};
 
 /**
  * Fetches poll details including current vote counts
  * @summary Get poll details
  */
 export type getPollsIdResponse200 = {
-  data: GetPollResponse
-  status: 200
-}
-
-export type getPollsIdResponseSuccess = (getPollsIdResponse200) & {
-  headers: Headers;
+	data: GetPollResponse;
+	status: 200;
 };
-;
 
-export type getPollsIdResponse = (getPollsIdResponseSuccess)
+export type getPollsIdResponseSuccess = getPollsIdResponse200 & {
+	headers: Headers;
+};
+export type getPollsIdResponse = getPollsIdResponseSuccess;
 
-export const getGetPollsIdUrl = (id: string,) => {
+export const getGetPollsIdUrl = (id: string) => {
+	return `/polls/${id}`;
+};
 
-
-  
-
-  return `/polls/${id}`
-}
-
-export const getPollsId = async (id: string, options?: RequestInit): Promise<getPollsIdResponse> => {
-  
-  return fetchClient<getPollsIdResponse>(getGetPollsIdUrl(id),
-  {      
-    ...options,
-    method: 'GET'
-    
-    
-  }
-);}
-  
-
+export const getPollsId = async (
+	id: string,
+	options?: RequestInit
+): Promise<getPollsIdResponse> => {
+	return fetchClient<getPollsIdResponse>(getGetPollsIdUrl(id), {
+		...options,
+		method: 'GET'
+	});
+};
 
 /**
  * Submit a vote for a specific option on a poll
  * @summary Cast a vote
  */
 export type postPollsIdVoteResponse201 = {
-  data: CastVoteResponse
-  status: 201
-}
-
-export type postPollsIdVoteResponseSuccess = (postPollsIdVoteResponse201) & {
-  headers: Headers;
+	data: CastVoteResponse;
+	status: 201;
 };
-;
 
-export type postPollsIdVoteResponse = (postPollsIdVoteResponseSuccess)
+export type postPollsIdVoteResponseSuccess = postPollsIdVoteResponse201 & {
+	headers: Headers;
+};
+export type postPollsIdVoteResponse = postPollsIdVoteResponseSuccess;
 
-export const getPostPollsIdVoteUrl = (id: string,) => {
+export const getPostPollsIdVoteUrl = (id: string) => {
+	return `/polls/${id}/vote`;
+};
 
-
-  
-
-  return `/polls/${id}/vote`
-}
-
-export const postPollsIdVote = async (id: string,
-    castVoteBody: CastVoteBody, options?: RequestInit): Promise<postPollsIdVoteResponse> => {
-  
-  return fetchClient<postPollsIdVoteResponse>(getPostPollsIdVoteUrl(id),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      castVoteBody,)
-  }
-);}
+export const postPollsIdVote = async (
+	id: string,
+	castVoteBody: CastVoteBody,
+	options?: RequestInit
+): Promise<postPollsIdVoteResponse> => {
+	return fetchClient<postPollsIdVoteResponse>(getPostPollsIdVoteUrl(id), {
+		...options,
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json', ...options?.headers },
+		body: JSON.stringify(castVoteBody)
+	});
+};

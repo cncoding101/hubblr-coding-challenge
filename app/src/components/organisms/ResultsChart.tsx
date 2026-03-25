@@ -28,20 +28,14 @@ export const ResultsChart = ({
 					return (
 						<div key={option.id} className="flex flex-col gap-1.5">
 							<div className="flex items-center justify-between">
-								<Text
-									variant="label"
-									className={votedOptionId === option.id ? 'text-primary' : ''}
-								>
+								<Text variant="label" className={votedOptionId === option.id ? 'text-primary' : ''}>
 									{option.label}
 								</Text>
 								<Text variant="label" color="muted">
 									{option.votes} ({Math.round(percentage)}%)
 								</Text>
 							</div>
-							<ProgressBar
-								percentage={percentage}
-								highlighted={votedOptionId === option.id}
-							/>
+							<ProgressBar percentage={percentage} highlighted={votedOptionId === option.id} />
 						</div>
 					);
 				})}

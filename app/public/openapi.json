@@ -1,334 +1,294 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "title": "Hubblr API",
-    "version": "1.0.0",
-    "description": "Hubblr API for voting polls"
-  },
-  "servers": [
-    {
-      "url": "http://localhost:3000/api",
-      "description": "Local server"
-    }
-  ],
-  "paths": {
-    "/polls": {
-      "post": {
-        "operationId": "post-polls",
-        "summary": "Create a new poll",
-        "description": "Creates a poll with a question and 2–5 answer options",
-        "tags": [
-          "Polls"
-        ],
-        "parameters": [],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePollBody"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreatePollResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/polls/{id}": {
-      "get": {
-        "operationId": "get-polls-{id}",
-        "summary": "Get poll details",
-        "description": "Fetches poll details including current vote counts",
-        "tags": [
-          "Polls"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "description": "Poll ID"
-            },
-            "required": true,
-            "description": "Poll ID",
-            "example": "123"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetPollResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/polls/{id}/vote": {
-      "post": {
-        "operationId": "post-polls-{id}-vote",
-        "summary": "Cast a vote",
-        "description": "Submit a vote for a specific option on a poll",
-        "tags": [
-          "Polls"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "string",
-              "description": "Poll ID"
-            },
-            "required": true,
-            "description": "Poll ID",
-            "example": "123"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CastVoteBody"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CastVoteResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "CreatePollBody": {
-        "type": "object",
-        "properties": {
-          "question": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The poll question"
-          },
-          "options": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1,
-              "description": "Option label"
-            },
-            "minItems": 2,
-            "maxItems": 5,
-            "description": "List of answer options"
-          }
-        },
-        "required": [
-          "question",
-          "options"
-        ]
-      },
-      "CreatePollResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Poll ID"
-          },
-          "question": {
-            "type": "string",
-            "description": "The poll question"
-          },
-          "createdAt": {
-            "type": "object",
-            "description": "Creation timestamp"
-          },
-          "options": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "number",
-                  "description": "Option ID"
-                },
-                "label": {
-                  "type": "string",
-                  "description": "Option label"
-                }
-              },
-              "required": [
-                "id",
-                "label"
-              ]
-            },
-            "description": "Poll options"
-          }
-        },
-        "required": [
-          "id",
-          "question",
-          "createdAt",
-          "options"
-        ]
-      },
-      "PollPathParams": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Poll ID"
-          }
-        },
-        "required": [
-          "id"
-        ]
-      },
-      "GetPollResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Poll ID"
-          },
-          "question": {
-            "type": "string",
-            "description": "The poll question"
-          },
-          "createdAt": {
-            "type": "string",
-            "description": "Creation timestamp"
-          },
-          "totalVotes": {
-            "type": "number",
-            "description": "Total number of votes"
-          },
-          "options": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PollOptionResponse"
-            },
-            "description": "Poll options with vote counts"
-          }
-        },
-        "required": [
-          "id",
-          "question",
-          "createdAt",
-          "totalVotes",
-          "options"
-        ]
-      },
-      "VotePathParams": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Poll ID"
-          }
-        },
-        "required": [
-          "id"
-        ]
-      },
-      "CastVoteBody": {
-        "type": "object",
-        "properties": {
-          "optionId": {
-            "type": "integer",
-            "minimum": 0,
-            "exclusiveMinimum": true,
-            "description": "ID of the option to vote for"
-          },
-          "voterToken": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Unique browser token"
-          }
-        },
-        "required": [
-          "optionId",
-          "voterToken"
-        ]
-      },
-      "CastVoteResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "description": "Vote ID"
-          },
-          "pollId": {
-            "type": "string",
-            "description": "Poll ID"
-          },
-          "optionId": {
-            "type": "number",
-            "description": "Voted option ID"
-          },
-          "voterToken": {
-            "type": "string",
-            "description": "Voter token"
-          },
-          "createdAt": {
-            "type": "string",
-            "description": "Vote timestamp"
-          }
-        },
-        "required": [
-          "id",
-          "pollId",
-          "optionId",
-          "voterToken",
-          "createdAt"
-        ]
-      },
-      "PollOptionResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number",
-            "description": "Option ID"
-          },
-          "label": {
-            "type": "string",
-            "description": "Option label"
-          },
-          "votes": {
-            "type": "number",
-            "description": "Number of votes for this option"
-          }
-        },
-        "required": [
-          "id",
-          "label",
-          "votes"
-        ]
-      }
-    },
-    "responses": {}
-  }
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Hubblr API",
+		"version": "1.0.0",
+		"description": "Hubblr API for voting polls"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000/api",
+			"description": "Local server"
+		}
+	],
+	"paths": {
+		"/polls": {
+			"post": {
+				"operationId": "post-polls",
+				"summary": "Create a new poll",
+				"description": "Creates a poll with a question and 2–5 answer options",
+				"tags": ["Polls"],
+				"parameters": [],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePollBody"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CreatePollResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/polls/{id}": {
+			"get": {
+				"operationId": "get-polls-{id}",
+				"summary": "Get poll details",
+				"description": "Fetches poll details including current vote counts",
+				"tags": ["Polls"],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"schema": {
+							"type": "string",
+							"description": "Poll ID"
+						},
+						"required": true,
+						"description": "Poll ID",
+						"example": "123"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetPollResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/polls/{id}/vote": {
+			"post": {
+				"operationId": "post-polls-{id}-vote",
+				"summary": "Cast a vote",
+				"description": "Submit a vote for a specific option on a poll",
+				"tags": ["Polls"],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"schema": {
+							"type": "string",
+							"description": "Poll ID"
+						},
+						"required": true,
+						"description": "Poll ID",
+						"example": "123"
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CastVoteBody"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Successful response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/CastVoteResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"CreatePollBody": {
+				"type": "object",
+				"properties": {
+					"question": {
+						"type": "string",
+						"minLength": 1,
+						"description": "The poll question"
+					},
+					"options": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"minLength": 1,
+							"description": "Option label"
+						},
+						"minItems": 2,
+						"maxItems": 5,
+						"description": "List of answer options"
+					}
+				},
+				"required": ["question", "options"]
+			},
+			"CreatePollResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Poll ID"
+					},
+					"question": {
+						"type": "string",
+						"description": "The poll question"
+					},
+					"createdAt": {
+						"type": "object",
+						"description": "Creation timestamp"
+					},
+					"options": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "number",
+									"description": "Option ID"
+								},
+								"label": {
+									"type": "string",
+									"description": "Option label"
+								}
+							},
+							"required": ["id", "label"]
+						},
+						"description": "Poll options"
+					}
+				},
+				"required": ["id", "question", "createdAt", "options"]
+			},
+			"PollPathParams": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Poll ID"
+					}
+				},
+				"required": ["id"]
+			},
+			"GetPollResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Poll ID"
+					},
+					"question": {
+						"type": "string",
+						"description": "The poll question"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Creation timestamp"
+					},
+					"totalVotes": {
+						"type": "number",
+						"description": "Total number of votes"
+					},
+					"options": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/PollOptionResponse"
+						},
+						"description": "Poll options with vote counts"
+					}
+				},
+				"required": ["id", "question", "createdAt", "totalVotes", "options"]
+			},
+			"VotePathParams": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Poll ID"
+					}
+				},
+				"required": ["id"]
+			},
+			"CastVoteBody": {
+				"type": "object",
+				"properties": {
+					"optionId": {
+						"type": "integer",
+						"minimum": 0,
+						"exclusiveMinimum": true,
+						"description": "ID of the option to vote for"
+					},
+					"voterToken": {
+						"type": "string",
+						"minLength": 1,
+						"description": "Unique browser token"
+					}
+				},
+				"required": ["optionId", "voterToken"]
+			},
+			"CastVoteResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"description": "Vote ID"
+					},
+					"pollId": {
+						"type": "string",
+						"description": "Poll ID"
+					},
+					"optionId": {
+						"type": "number",
+						"description": "Voted option ID"
+					},
+					"voterToken": {
+						"type": "string",
+						"description": "Voter token"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Vote timestamp"
+					}
+				},
+				"required": ["id", "pollId", "optionId", "voterToken", "createdAt"]
+			},
+			"PollOptionResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "number",
+						"description": "Option ID"
+					},
+					"label": {
+						"type": "string",
+						"description": "Option label"
+					},
+					"votes": {
+						"type": "number",
+						"description": "Number of votes for this option"
+					}
+				},
+				"required": ["id", "label", "votes"]
+			}
+		},
+		"responses": {}
+	}
 }
