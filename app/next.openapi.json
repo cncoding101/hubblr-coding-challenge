@@ -1,0 +1,25 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Hubblr API",
+		"version": "1.0.0",
+		"description": "Hubblr API for voting polls"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000/api",
+			"description": "Local server"
+		}
+	],
+	"apiDir": "src/app/api",
+	"routerType": "app",
+	"schemaDir": "src/schemas",
+	"schemaType": "zod",
+	"outputFile": "openapi.json",
+	"outputDir": "./public",
+	"docsUrl": "/docs",
+	"ui": "scalar",
+	"includeOpenApiRoutes": false,
+	"ignoreRoutes": ["/docs"],
+	"debug": false
+}

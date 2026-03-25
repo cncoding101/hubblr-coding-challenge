@@ -1,0 +1,81 @@
+@theme {
+	/* ── Custom tokens ─────────────────────────────────────────────────── */
+
+	--color-base-100: #ffffff;
+	--color-base-200: #f7f7f8;
+	--color-base-300: #e5e7eb;
+	--color-base-content: #111827;
+	--color-base-content-muted: #6b7280;
+
+	--color-primary: #6366f1;
+	--color-primary-content: #ffffff;
+
+	--color-secondary: #f0f0ff;
+	--color-secondary-content: #3730a3;
+
+	--color-accent: #ede9fe;
+	--color-accent-content: #6366f1;
+
+	--color-neutral: #f9fafb;
+	--color-neutral-content: #111827;
+
+	--color-info: #dbeafe;
+	--color-info-content: #1e40af;
+
+	--color-success: #d1fae5;
+	--color-success-content: #065f46;
+
+	--color-warning: #fef3c7;
+	--color-warning-content: #92400e;
+
+	--color-error: #ef4444;
+	--color-error-content: #ffffff;
+
+	--color-backdrop: #6366f133;
+
+	--color-header: #111827;
+	--color-header-content: #ffffff;
+
+	/* ── Radius ────────────────────────────────────────────────────────── */
+
+	--radius-none: 0;
+	--radius-sm: 0.25rem;
+	--radius-md: 0.5rem;
+	--radius-lg: 0.75rem;
+	--radius-xl: 1rem;
+	--radius-full: 9999px;
+	--radius-selector: 0.5rem;
+	--radius-box: 0.75rem;
+
+	/* ── Shadows ───────────────────────────────────────────────────────── */
+
+	--shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+	--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+
+	/* ── shadcn compatibility aliases ──────────────────────────────────── */
+
+	--color-background: #ffffff;
+	--color-foreground: #111827;
+
+	--color-card: #ffffff;
+	--color-card-foreground: #111827;
+
+	--color-popover: #ffffff;
+	--color-popover-foreground: #111827;
+
+	--color-primary-foreground: #ffffff;
+
+	--color-secondary-foreground: #3730a3;
+
+	--color-muted: #f7f7f8;
+	--color-muted-foreground: #6b7280;
+
+	--color-accent-foreground: #6366f1;
+
+	--color-destructive: #ef4444;
+
+	--color-border: #e5e7eb;
+	--color-input: #e5e7eb;
+	--color-ring: #6366f1;
+}
